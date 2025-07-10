@@ -1,0 +1,17 @@
+AverageUsersLastDayOfWeek = 
+VAR LastAvailableDate = 
+    CALCULATE(
+        MAX(DimDate[Date]),
+        DimDate[Year_Week] = MAX(DimDate[Year_Week])
+    ) -- Obtiene la última fecha disponible de la semana actual
+VAR TotalUsersLastDay = 
+    CALCULATE(
+        SUM(CR_Interactions_with_massives[num_macs]),
+        DimDate[Date] = LastAvailableDate
+    ) -- Cuenta los usuarios únicos del último día disponible
+RETURN
+IF(
+    ISBLANK(TotalUsersLastDay),
+    0, -- Retorna 0 si no hay datos
+    TotalUsersLastDay -- Total de usuarios del último día disponible
+)

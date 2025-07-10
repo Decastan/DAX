@@ -1,0 +1,20 @@
+#### DAX for Month To Date Analysis
+
+#### Una vez se haya creado la tabla de Dimensión de Fecha...
+####... se crean las siguientes columnas para construir la lógica de Month To Date
+
+MaxDate = MAX(DimDate[Date])
+
+MaxDay = DAY(DimDate[MaxDate])
+
+IsM2D = IF(DimDate[MaxDay] >= DimDate[Day], 1, 0)
+
+
+IsOnMaxDate = IF(DimDate[MaxDate] >= DimDate[Date], 1, 0)
+
+
+maxYearMonth = YEAR(DimDate[MaxDate]) & 
+IF(LEN(MONTH(DimDate[MaxDate])) = 1, 0 & MONTH(DimDate[MaxDate]), MONTH(DimDate[MaxDate]))
+
+
+N0 = DimDate[Year_Month] - DimDate[maxYearMonth]

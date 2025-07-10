@@ -1,0 +1,25 @@
+DimDate = 
+VAR FechaMin = MIN(CR_Interactions_with_massives[dt])
+VAR FechaMax = MAX(CR_Interactions_with_massives[dt])
+RETURN
+ADDCOLUMNS(
+    CALENDAR(FechaMin, FechaMax),
+    "Year", YEAR([Date]),
+    "Month", MONTH([Date]),
+    "NombreMes", FORMAT([Date], "MMMM"), 
+    "MonthName", FORMAT([Date], "MMMM", "en-US"),
+    "Day", DAY([Date]),
+    "NombreDía", FORMAT([Date], "dddd"),
+    "Dayname", FORMAT([Date], "dddd", "en-US"),
+    "Quarter", "Q" & FORMAT([Date], "Q"),
+    "Week", WEEKNUM([Date], 2),
+    "Month_Ini", LEFT(FORMAT([Date], "MMMM", "en-US"), 3),
+    "Day_Ini", LEFT(FORMAT([Date], "dddd", "en-US"), 3),
+    "Year_Month", FORMAT([Date], "YYYYMM"),
+    "Year_Week", 
+        IF(
+            YEAR([Date]) = 2024 && MONTH([Date]) = 12 && DAY([Date]) >= 30,
+            "2025-01", -- Reasigna como la primera semana de 2025
+            FORMAT([Date], "YYYY") & "-" & FORMAT(WEEKNUM([Date], 2), "00")
+        )
+)
